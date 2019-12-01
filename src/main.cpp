@@ -149,7 +149,7 @@ int main() {
             // Get vehicle current speed.
             double vehicle_speed = distance(0, 0, sensor_fusion[i][3],
                                           sensor_fusion[i][4]);
-            //double check_car_s = sensor_fusion[i][5];
+            // Get vehicle path distance in Frenet coordinates.
             double vehicle_s = sensor_fusion[i][5];
 
             // If vehicle is on the same lane as ego vehicle

@@ -96,14 +96,52 @@ The path for the ego vehicle is generated in three distinctive steps commented i
 
 1. Prediction
 
-In this step the algorithm is analysing the current and future positions of other vehicles in relation to the ego vehicle. The purpose of this step is to generate eligible behaviours for the ego vehicle. 
+In this step the algorithm is analysing the current and future positions of other vehicles in relation to the ego vehicle. The purpose of this step is to generate eligible behaviours for the ego vehicle. The steps are following:  
+
+* Iterate through all the vehicles detected by data fusion,
+
+* Get vehicle attributes such as speed, path distance in Frenet coordinates and current lane,
+
+* Mark if vehicle is ahead of the ego vehicle whitin certain distance,
+
+* Mark if vehicle is or will be on the left side of the ego vehicle within certain distance,
+
+* Mark if vehicle is or will be on the right side of the ego vehicle within certain distance,   
 
 2. Behaviour Planning
 
 In this step the algoirithm is deciding what to do the best to keep the reference speed (brake, accelerate or change lane) based
 on the prediction.
 
+* If there is vehicle ahead and there is no vehicle on the left side change line to the left if possible,
+
+* If there is vehicle ahead and there is no vehicle on the right side change line to the left if possible,
+
+* If there is vehicle ahead and there is no possiblity to change lane deaccelerate the speed,
+
+* If there is no vehicle ahead and ego vehicle is not on the default lane try to change lane to default,
+
+* If there is no vehicle ahead accelerate to the desired speed of 80 kmh, 
+
 3. Trajectory Generation
 
 In this step the algorithm is generating the detailed trajectory for the ego vehicle based on the planned behaviour.
- 
+
+* If there are no previous points from the trajectory add current ego vehicle position to the trajectory plan,
+
+* If there are previous points from the trajectory add two of them to the trajectory plan,
+
+* In addition setup some future points acording to the selected lane and the map,
+
+* Convert trajectory coordinates to the ego vehicle coordinates to simplify math in the trajectory plan,
+
+* Create spline on the trajectory plan,
+
+* Build the trajectory plan based on planned speed,
+
+* Convert trajectory plan to word coordinates,
+
+* Add previous path to the trajectory,
+
+* Add trajectory plan to the trajectory.
+
