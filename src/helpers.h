@@ -8,6 +8,8 @@
 // for convenience
 using std::string;
 using std::vector;
+using std::sin;
+using std::cos;
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
@@ -152,6 +154,38 @@ vector<double> getXY(double s, double d, const vector<double> &maps_s,
   double y = seg_y + d*sin(perp_heading);
 
   return {x,y};
+}
+
+vector<double> move_and_rotate_point_relative_to_orgin(
+    const vector<double> &origin, double angle, const vector<double> &point) {
+  return {(point[0]-origin[0])*cos(-angle)-(point[1]-origin[1])*sin(-angle),
+    (point[0] - origin[0])*sin(-angle) + (point[1] - origin[1])*cos(-angle)};
+}
+
+vector<double> rotate_and_move_back_point_relative_to_orgin(
+    const vector<double> &origin, double angle, const vector<double> &point) {
+  return {point[0]*cos(angle)-point[1]*sin(angle)+origin[0],
+    point[0]*sin(angle)+point[1]*cos(angle)+origin[1]};
+}
+
+double kmh_to_ms(double kmh) {
+  return kmh/3.6;
+}
+
+double kmh_to_ms_50hz(double kmh) {
+  return kmh_to_ms(kmh)*0.02;
+}
+
+double ms_to_kmh(double ms) {
+  return ms*3.6;
+}
+
+double ms_to_kmh_50hz(double ms) {
+  return ms_to_kmh(ms)*0.02;
+}
+
+double ms_50hz(double ms) {
+  return ms*0.02;
 }
 
 #endif  // HELPERS_H
